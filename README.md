@@ -13,7 +13,7 @@ This is a basic Quora-like Q&A web application built using Django.
 
 ```bash
 git clone https://github.com/your-username/quora-clone-django.git
-cd quora-clone-django
+cd quora_clone
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
