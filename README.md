@@ -8,7 +8,6 @@ This is a basic Quora-like Q&A web application built using Django.
 - Ask Questions
 - Post Answers
 - Like Answers
-- Bootstrap UI
 
 ## Setup
 
