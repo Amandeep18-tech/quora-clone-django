@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from .forms import RegisterForm, QuestionForm, AnswerForm
 from .models import Question, Answer
 from django.utils.timezone import now
@@ -40,9 +39,7 @@ def question_list(request):
 
 @login_required
 def post_question(request):
-    today = now().date()
-    daily_question_count = Question.objects.filter(user=request.user, created_at__date=today).count()
-    if daily_question_count >= 5:
+    if Question.objects.daily_question_count(request.user) >= 5:
         return render(request, "basic_message.html", {
             "message": "You’ve reached the daily limit of 5 questions."
         })
@@ -61,7 +58,7 @@ def post_question(request):
 @login_required
 def question_detail(request, question_id):
     question = get_object_or_404(Question, id=question_id)
-    answers = Answer.objects.filter(question=question).order_by("-created_at")
+    answers = Answer.objects.for_question(question)
 
     if request.method == "POST":
         form = AnswerForm(request.POST)
